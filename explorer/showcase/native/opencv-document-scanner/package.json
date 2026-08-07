@@ -1,0 +1,42 @@
+{
+  "name": "@lynx-showcase/opencv-document-scanner",
+  "version": "0.0.1",
+  "description": "Cross-platform OpenCV document scanner for Lynx N-API AutoLink",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./lynxtron": "./lynxtron/index.cjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build:lynxtron": "cmake -S lynxtron -B lynxtron/build -DCMAKE_BUILD_TYPE=Release \"-DOpenCV_DIR=$OpenCV_DIR\" \"-DLYNX_LIBRARY_HEADERS_DIR=$LYNX_LIBRARY_HEADERS_DIR\" \"-DLYNX_WEAK_NODE_API_ROOT=$LYNX_WEAK_NODE_API_ROOT\" && cmake --build lynxtron/build --config Release"
+  },
+  "dependencies": {
+    "@lynx-js/lynx-library-headers": "0.0.9",
+    "@lynx-js/weak-node-api": "0.0.9"
+  },
+  "files": [
+    "android/CMakeLists.txt",
+    "android/build.gradle",
+    "android/src",
+    "DEVELOPER_GUIDE.md",
+    "generated",
+    "INTEGRATION_GUIDE.md",
+    "ios",
+    "lynxtron/CMakeLists.txt",
+    "lynxtron/dist",
+    "lynxtron/index.cjs",
+    "lynxtron/lynx_module.cc",
+    "lynxtron/node_entry.cc",
+    "lynx.lib.json",
+    "shared",
+    "src",
+    "types"
+  ]
+}

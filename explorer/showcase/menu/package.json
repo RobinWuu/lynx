@@ -10,6 +10,7 @@
   "dependencies": {
     "@explorer/lib": "workspace:*",
     "@lynx-js/react": "0.107.0",
+    "@lynx-showcase/opencv-document-scanner": "workspace:*",
     "react-dom": "^19.0.0",
     "react-router-dom": "6",
     "sparkling-method": "2.1.0-rc.12",

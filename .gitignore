@@ -80,6 +80,12 @@ explorer/android/gradle/wrapper/gradle-6.7.1-all.zip
 explorer/android/local.properties
 explorer/android/lynx_explorer/src/main/assets/*
 !explorer/android/lynx_explorer/src/main/assets/testBench/
+explorer/showcase/menu/opencv/sudoku.png
+explorer/showcase/native/*/android/.cxx/
+explorer/showcase/native/*/android/build/
+explorer/showcase/native/*/lynxtron/build/
+explorer/showcase/native/*/lynxtron/dist/
+platform/android/lynx_library_plugin/build/
 core/runtime/jsi/v8/CMakeLists_impl/
 
 explorer/darwin/ios/lynx_explorer/Podfile.lock
