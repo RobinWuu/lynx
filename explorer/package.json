@@ -6,5 +6,8 @@
     "build:homepage": "pnpm --filter homepage build",
     "build:showcase": "pnpm --filter showcase build",
     "build": "pnpm run build:homepage && pnpm run build:showcase"
+  },
+  "dependencies": {
+    "@lynx-showcase/opencv-document-scanner": "workspace:*"
   }
 }

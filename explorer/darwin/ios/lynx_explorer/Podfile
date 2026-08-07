@@ -142,7 +142,7 @@ lynx_library_plugin_dir = File.join(lynx_root, 'tools/ios_tools/cocoapods-lynx-l
 $LOAD_PATH.unshift lynx_library_plugin_dir
 load File.join(lynx_library_plugin_dir, 'cocoapods_plugin.rb')
 
-platform :ios, '12.0'
+platform :ios, '13.0'
 
 install!'cocoapods',:deterministic_uuids=>false,
                     :lock_pod_sources=>false,

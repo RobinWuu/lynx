@@ -1,0 +1,32 @@
+{
+  "platforms": {
+    "android": {
+      "packageName": "org.lynxsdk.example.opencv",
+      "sourceDir": "android",
+      "nodeApiAddons": [
+        {
+          "name": "OpenCVDocumentScanner",
+          "libraryName": "OpenCVDocumentScanner",
+          "jniLibsDir": "android/src/main/jniLibs",
+          "required": false
+        }
+      ]
+    },
+    "ios": {
+      "sourceDir": "ios",
+      "podspecPath": "ios/OpenCVDocumentScanner.podspec",
+      "nodeApiAddons": [
+        {
+          "name": "OpenCVDocumentScanner",
+          "podName": "OpenCVDocumentScanner",
+          "podspecPath": "ios/OpenCVDocumentScanner.podspec",
+          "addonUseHeader": "addon_use.h",
+          "required": true
+        }
+      ]
+    },
+    "lynxtron": {
+      "path": "lynxtron"
+    }
+  }
+}

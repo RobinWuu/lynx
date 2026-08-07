@@ -1,0 +1,198 @@
+// Copyright 2026 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
+
+.workspace {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7f8;
+}
+
+.workspace-scroll {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 36px;
+}
+
+.header-band {
+  width: 100%;
+  min-height: 104px;
+  padding: 24px 20px 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #17242a;
+}
+
+.eyebrow {
+  color: #84e0b1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.heading {
+  margin-top: 5px;
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.scan-button {
+  width: 96px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #20a96b;
+  border-radius: 6px;
+}
+
+.scan-button-text {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-strip {
+  min-height: 42px;
+  margin: 14px 16px 4px;
+  padding: 0 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #d9e0e3;
+  border-radius: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  margin-right: 9px;
+  background-color: #df9a28;
+  border-radius: 50%;
+}
+
+.status-dot.success {
+  background-color: #20a96b;
+}
+
+.status-text {
+  color: #34434a;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.image-section {
+  margin: 16px 16px 0;
+}
+
+.section-label {
+  margin-bottom: 7px;
+  color: #66767d;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.source-image {
+  width: 100%;
+  height: 270px;
+  background-color: #e1e6e8;
+  border-radius: 6px;
+}
+
+.results-grid {
+  width: 100%;
+  padding: 18px 16px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.result-column {
+  width: 48.5%;
+}
+
+.image-frame {
+  width: 100%;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #17242a;
+  border: 1px solid #243a43;
+  border-radius: 6px;
+}
+
+.light-frame {
+  background-color: #ffffff;
+  border-color: #d9e0e3;
+}
+
+.result-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-placeholder {
+  width: 44px;
+  height: 3px;
+  background-color: #48606a;
+}
+
+.light-placeholder {
+  background-color: #c9d1d4;
+}
+
+.metrics-band {
+  margin: 18px 16px 0;
+  padding: 16px 4px;
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  border-top: 1px solid #d9e0e3;
+  border-bottom: 1px solid #d9e0e3;
+}
+
+.metric {
+  width: 33.33%;
+  display: flex;
+  align-items: center;
+}
+
+.metric-value {
+  color: #17242a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.metric-label {
+  margin-top: 4px;
+  color: #74838a;
+  font-size: 10px;
+}
+
+.runtime-band {
+  margin: 14px 16px 0;
+  padding: 14px;
+  background-color: #e9eff1;
+  border-radius: 6px;
+}
+
+.runtime-title {
+  color: #263a43;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.runtime-detail {
+  margin-top: 5px;
+  color: #68777e;
+  font-size: 11px;
+  line-height: 16px;
+}

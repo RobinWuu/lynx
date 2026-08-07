@@ -30,6 +30,7 @@ android {
             // duplicate those produced by Lynx's own modules.
             pickFirst 'META-INF/*.kotlin_module'
             pickFirst '**/libnapi_adapter.so'
+            pickFirst '**/libopencv_java4.so'
         }
 
         // Keep the Explorer-owned CMake target aligned with the repository's

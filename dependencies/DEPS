@@ -59,6 +59,17 @@ def prepare_pnpm_shim():
 
 
 deps = {
+    'explorer/showcase/menu/opencv/sudoku.png': {
+        "type": "http",
+        "url": (
+            "https://raw.githubusercontent.com/opencv/opencv/"
+            "77dfa297d08fdecdc509fc01ad92a2e9ec776a57/"
+            "samples/data/sudoku.png"
+        ),
+        "sha256": "3cd9ab173f7178c0a16bba9f867062b58b5d60918d5aeb8ced85cba0b24c353a",
+        "decompress": False,
+        "ignore_in_git": True,
+    },
     'platform/android/gradle/wrapper/gradle-6.7.1-all.zip': {
         "type": "http",
         "url": "https://services.gradle.org/distributions/gradle-6.7.1-all.zip",
