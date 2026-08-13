@@ -117,3 +117,22 @@ unittest_set("napi_unittests_testset") {
     deps += [ ":napi_binding_jsc" ]
   }
 }
+
+executable("napi_async_work_tests_exec") {
+  testonly = true
+  sources = [ "napi_async_work_unittest.cc" ]
+
+  configs += [ ":napi_config" ]
+  include_dirs = [
+    "../../../../third_party/quickjs/src/src/interpreter",
+    "//third_party/googletest/googletest/include",
+  ]
+
+  deps = [
+    "../../../../third_party/napi:env",
+    "../../../../third_party/napi:quickjs",
+    "../../../../third_party/quickjs",
+    "../../../../testing/utils:gtest_custom_init",
+    "../../../../testing/utils:gtest_main",
+  ]
+}
