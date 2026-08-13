@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
 class LynxLibraryScannerTest {
@@ -46,6 +47,59 @@ class LynxLibraryScannerTest {
             assertTrue('Expected GradleException', false)
         } catch (GradleException e) {
             assertTrue(e.message.contains('platforms.android.packageName'))
+        }
+    }
+
+    @Test
+    void supportsExplicitAndDisabledProviderClasses() {
+        File root = temporaryFolder.newFolder('app')
+        File explicitPackage = writeLibrary(
+            root, 'explicit-lib', 'com.example.explicit', null)
+        new File(explicitPackage, 'lynx.lib.json').text = '''{
+          "platforms": {
+            "android": {
+              "packageName": "com.example.explicit",
+              "providerClassName": "com.example.provider.CustomProvider"
+            }
+          }
+        }'''
+        File napiPackage = writeLibrary(
+            root, 'napi-lib', 'com.example.napi', null)
+        new File(napiPackage, 'lynx.lib.json').text = '''{
+          "platforms": {
+            "android": {
+              "packageName": "com.example.napi",
+              "providerClassName": null
+            }
+          }
+        }'''
+
+        List<LynxLibraryInfo> libraries = LynxLibraryScanner.scan(root)
+
+        assertEquals('com.example.provider.CustomProvider',
+            libraries.find { it.npmName == 'explicit-lib' }.providerClassName)
+        assertNull(libraries.find { it.npmName == 'napi-lib' }.providerClassName)
+    }
+
+    @Test
+    void rejectsInvalidProviderClassName() {
+        File root = temporaryFolder.newFolder('app')
+        File packageDir = writeLibrary(
+            root, 'bad-provider-lib', 'com.example.provider', null)
+        new File(packageDir, 'lynx.lib.json').text = '''{
+          "platforms": {
+            "android": {
+              "packageName": "com.example.provider",
+              "providerClassName": "NotQualified"
+            }
+          }
+        }'''
+
+        try {
+            LynxLibraryScanner.scan(root)
+            assertTrue('Expected GradleException', false)
+        } catch (GradleException e) {
+            assertTrue(e.message.contains('platforms.android.providerClassName'))
         }
     }
 

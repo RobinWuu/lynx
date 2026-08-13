@@ -123,8 +123,28 @@ class LynxLibraryScanner {
         }
         List<LynxNodeApiAddonInfo> nodeApiAddons = parseNodeApiAddons(
             android.nodeApiAddons, packageDir, manifest)
+        String providerClassName = parseProviderClassName(
+            android, packageName.trim(), manifest)
         new LynxLibraryInfo(npmName, packageDir, manifest, packageName.trim(), sourceDir,
-            androidDir, projectPathFor(npmName), nodeApiAddons)
+            androidDir, projectPathFor(npmName), providerClassName, nodeApiAddons)
+    }
+
+    private static String parseProviderClassName(
+        Map android, String packageName, File manifest) {
+        if (!android.containsKey('providerClassName')) {
+            return "${packageName}.LynxLibraryProviderImpl"
+        }
+        Object providerClassName = android.providerClassName
+        if (providerClassName == null) {
+            return null
+        }
+        if (!(providerClassName instanceof String)
+            || providerClassName.trim().isEmpty()
+            || !(providerClassName.trim() ==~ '[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)+')) {
+            throw new GradleException(
+                "Invalid platforms.android.providerClassName in ${manifest}; expected a fully qualified Java class name or null")
+        }
+        providerClassName.trim()
     }
 
     private static List<LynxNodeApiAddonInfo> parseNodeApiAddons(

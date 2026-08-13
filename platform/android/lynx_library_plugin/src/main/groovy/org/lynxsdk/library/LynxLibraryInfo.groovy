@@ -27,9 +27,6 @@ class LynxLibraryInfo {
     String androidSourceDir
     File androidDir
     String projectPath
+    String providerClassName
     List<LynxNodeApiAddonInfo> nodeApiAddons = []
-
-    String getProviderClassName() {
-        "${androidPackageName}.LynxLibraryProviderImpl"
-    }
 }
