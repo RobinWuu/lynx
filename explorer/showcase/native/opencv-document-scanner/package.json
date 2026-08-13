@@ -1,6 +1,6 @@
 {
-  "name": "@lynx-showcase/opencv-document-scanner",
-  "version": "0.0.1",
+  "name": "@byted-lynx/opencv-document-scanner",
+  "version": "0.1.0-alpha.1",
   "description": "Cross-platform OpenCV document scanner for Lynx N-API AutoLink",
   "license": "Apache-2.0",
   "type": "module",
@@ -15,28 +15,35 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build:lynxtron": "cmake -S lynxtron -B lynxtron/build -DCMAKE_BUILD_TYPE=Release \"-DOpenCV_DIR=$OpenCV_DIR\" \"-DLYNX_LIBRARY_HEADERS_DIR=$LYNX_LIBRARY_HEADERS_DIR\" \"-DLYNX_WEAK_NODE_API_ROOT=$LYNX_WEAK_NODE_API_ROOT\" && cmake --build lynxtron/build --config Release"
+    "build:lynxtron": "cmake -S lynxtron -B lynxtron/build -DCMAKE_BUILD_TYPE=Release \"-DOpenCV_DIR=$OpenCV_DIR\" \"-DLYNX_LIBRARY_HEADERS_DIR=$LYNX_LIBRARY_HEADERS_DIR\" \"-DLYNX_WEAK_NODE_API_ROOT=$LYNX_WEAK_NODE_API_ROOT\" && cmake --build lynxtron/build --config Release",
+    "prepack": "node ./scripts/verify-package.mjs"
   },
   "dependencies": {
     "@lynx-js/lynx-library-headers": "0.0.9",
     "@lynx-js/weak-node-api": "0.0.9"
   },
+  "publishConfig": {
+    "registry": "https://bnpm.byted.org/"
+  },
   "files": [
     "android/CMakeLists.txt",
     "android/build.gradle",
     "android/src",
-    "DEVELOPER_GUIDE.md",
+    "dist",
     "generated",
-    "INTEGRATION_GUIDE.md",
     "ios",
+    "LICENSE",
+    "licenses",
     "lynxtron/CMakeLists.txt",
-    "lynxtron/dist",
     "lynxtron/index.cjs",
     "lynxtron/lynx_module.cc",
     "lynxtron/node_entry.cc",
     "lynx.lib.json",
+    "README.md",
+    "scripts/verify-package.mjs",
     "shared",
     "src",
+    "THIRD_PARTY_NOTICES.md",
     "types"
   ]
 }

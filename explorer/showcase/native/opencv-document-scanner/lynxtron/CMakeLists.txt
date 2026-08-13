@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum macOS version")
+
 project(OpenCVDocumentScannerLynxtron LANGUAGES CXX)
 
 if(NOT APPLE)
@@ -79,7 +81,7 @@ set_target_properties(OpenCVDocumentScannerLynxtron PROPERTIES
   OUTPUT_NAME "OpenCVDocumentScanner"
   SUFFIX ".node"
   LIBRARY_OUTPUT_DIRECTORY
-    "${CMAKE_CURRENT_SOURCE_DIR}/dist/darwin/${LYNXTRON_ARCH}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../dist/darwin/${LYNXTRON_ARCH}"
 )
 
 foreach(
@@ -91,11 +93,18 @@ foreach(
   opencv_imgcodecs
 )
   if(TARGET "${OPENCV_RUNTIME_TARGET}")
-    add_custom_command(TARGET OpenCVDocumentScannerLynxtron POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-        "$<TARGET_FILE:${OPENCV_RUNTIME_TARGET}>"
-        "$<TARGET_FILE_DIR:OpenCVDocumentScannerLynxtron>/$<TARGET_SONAME_FILE_NAME:${OPENCV_RUNTIME_TARGET}>"
+    get_target_property(
+      OPENCV_RUNTIME_TARGET_TYPE
+      "${OPENCV_RUNTIME_TARGET}"
+      TYPE
     )
+    if(OPENCV_RUNTIME_TARGET_TYPE STREQUAL "SHARED_LIBRARY")
+      add_custom_command(TARGET OpenCVDocumentScannerLynxtron POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+          "$<TARGET_FILE:${OPENCV_RUNTIME_TARGET}>"
+          "$<TARGET_FILE_DIR:OpenCVDocumentScannerLynxtron>/$<TARGET_SONAME_FILE_NAME:${OPENCV_RUNTIME_TARGET}>"
+      )
+    endif()
   endif()
 endforeach()
 
@@ -114,9 +123,16 @@ foreach(
   opencv_imgcodecs
 )
   if(TARGET "${OPENCV_RUNTIME_TARGET}")
-    add_custom_command(TARGET OpenCVDocumentScannerLynxtron POST_BUILD
-      COMMAND "${CODESIGN_EXECUTABLE}" --force --sign -
-        "$<TARGET_FILE_DIR:OpenCVDocumentScannerLynxtron>/$<TARGET_SONAME_FILE_NAME:${OPENCV_RUNTIME_TARGET}>"
+    get_target_property(
+      OPENCV_RUNTIME_TARGET_TYPE
+      "${OPENCV_RUNTIME_TARGET}"
+      TYPE
     )
+    if(OPENCV_RUNTIME_TARGET_TYPE STREQUAL "SHARED_LIBRARY")
+      add_custom_command(TARGET OpenCVDocumentScannerLynxtron POST_BUILD
+        COMMAND "${CODESIGN_EXECUTABLE}" --force --sign -
+          "$<TARGET_FILE_DIR:OpenCVDocumentScannerLynxtron>/$<TARGET_SONAME_FILE_NAME:${OPENCV_RUNTIME_TARGET}>"
+      )
+    endif()
   endif()
 endforeach()

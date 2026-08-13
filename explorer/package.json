@@ -8,6 +8,6 @@
     "build": "pnpm run build:homepage && pnpm run build:showcase"
   },
   "dependencies": {
-    "@lynx-showcase/opencv-document-scanner": "workspace:*"
+    "@byted-lynx/opencv-document-scanner": "workspace:*"
   }
 }

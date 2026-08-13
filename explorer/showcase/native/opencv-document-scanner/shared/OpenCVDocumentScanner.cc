@@ -6,6 +6,7 @@
 #include <array>
 #include <chrono>
 #include <cmath>
+#include <cstdint>
 #include <cstring>
 #include <opencv2/core.hpp>
 #if __has_include(<opencv2/geometry/2d.hpp>)
@@ -16,6 +17,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "napi.h"
@@ -53,6 +55,27 @@ namespace {
 
 using Clock = std::chrono::steady_clock;
 using PointArray = std::array<cv::Point2f, 4>;
+
+constexpr size_t kMaxEncodedImageBytes = 32 * 1024 * 1024;
+constexpr int kMaxDecodedImageEdge = 12000;
+constexpr uint64_t kMaxDecodedImagePixels = 48ULL * 1000 * 1000;
+
+class ScannerError : public std::runtime_error {
+ public:
+  ScannerError(std::string code, std::string message)
+      : std::runtime_error(std::move(message)), code_(std::move(code)) {}
+
+  const std::string& code() const { return code_; }
+
+ private:
+  std::string code_;
+};
+
+void ThrowScannerError(Napi::Env env, const ScannerError& scanner_error) {
+  Napi::Error error = Napi::Error::New(env, scanner_error.what());
+  error.Value().Set("code", scanner_error.code());
+  error.ThrowAsJavaScriptException();
+}
 
 double Distance(const cv::Point2f& first, const cv::Point2f& second) {
   const double dx = first.x - second.x;
@@ -201,12 +224,37 @@ Napi::Value ScanDocument(const Napi::CallbackInfo& info) {
     const int jpeg_quality =
         info.Length() >= 2 ? info[1].As<Napi::Number>().Int32Value() : 88;
     Napi::ArrayBuffer input = info[0].As<Napi::ArrayBuffer>();
-    const auto* input_bytes = static_cast<const unsigned char*>(input.Data());
-    std::vector<unsigned char> encoded(input_bytes,
-                                       input_bytes + input.ByteLength());
-    cv::Mat source = cv::imdecode(encoded, cv::IMREAD_COLOR);
+    const size_t input_byte_length = input.ByteLength();
+    if (input_byte_length == 0) {
+      throw ScannerError("INPUT_EMPTY", "The encoded image is empty.");
+    }
+    if (input_byte_length > kMaxEncodedImageBytes) {
+      throw ScannerError("INPUT_TOO_LARGE",
+                         "The encoded image exceeds the 32 MiB input limit.");
+    }
+
+    cv::Mat encoded(1, static_cast<int>(input_byte_length), CV_8UC1,
+                    input.Data());
+    cv::Mat source;
+    try {
+      source = cv::imdecode(encoded, cv::IMREAD_COLOR);
+    } catch (const cv::Exception&) {
+      throw ScannerError("IMAGE_DECODE_FAILED",
+                         "OpenCV could not decode the input image.");
+    }
     if (source.empty()) {
-      throw std::runtime_error("OpenCV could not decode the input image.");
+      throw ScannerError("IMAGE_DECODE_FAILED",
+                         "OpenCV could not decode the input image.");
+    }
+
+    const uint64_t decoded_pixels =
+        static_cast<uint64_t>(source.cols) * static_cast<uint64_t>(source.rows);
+    if (source.cols > kMaxDecodedImageEdge ||
+        source.rows > kMaxDecodedImageEdge ||
+        decoded_pixels > kMaxDecodedImagePixels) {
+      throw ScannerError(
+          "IMAGE_DIMENSION_TOO_LARGE",
+          "The decoded image exceeds the 12000 pixel edge or 48 MP limit.");
     }
 
     const int max_dimension = 1100;
@@ -281,6 +329,8 @@ Napi::Value ScanDocument(const Napi::CallbackInfo& info) {
     result.Set("scannedImage", ToArrayBuffer(env, scanned_bytes));
     result.Set("edgeImage", ToArrayBuffer(env, edge_bytes));
     return result;
+  } catch (const ScannerError& error) {
+    ThrowScannerError(env, error);
   } catch (const cv::Exception& error) {
     Napi::Error::New(env, error.what()).ThrowAsJavaScriptException();
   } catch (const std::exception& error) {

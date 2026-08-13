@@ -159,7 +159,7 @@ explorer/showcase/menu/opencv/
 
 ```ts
 import { OpenCVDocumentScanner } from
-  '@lynx-showcase/opencv-document-scanner';
+  '@byted-lynx/opencv-document-scanner';
 ```
 
 它不知道 Android `.so`、iOS Pod、Lynxtron `.node`、generated registry 或 AutoLink
@@ -266,7 +266,7 @@ explorer/package.json
 ```json
 {
   "dependencies": {
-    "@lynx-showcase/opencv-document-scanner": "workspace:*"
+    "@byted-lynx/opencv-document-scanner": "workspace:*"
   }
 }
 ```
@@ -280,14 +280,14 @@ headers。
 安装 workspace 后生成：
 
 ```text
-explorer/node_modules/@lynx-showcase/opencv-document-scanner
+explorer/node_modules/@byted-lynx/opencv-document-scanner
   -> ../../showcase/native/opencv-document-scanner
 ```
 
 Android/iOS client 的实际扫描输入都是：
 
 ```text
-explorer/node_modules/@lynx-showcase/opencv-document-scanner/lynx.lib.json
+explorer/node_modules/@byted-lynx/opencv-document-scanner/lynx.lib.json
 ```
 
 没有将 `explorer/showcase` 配成私有扫描根目录。Showcase 和 menu 自己也依赖该
@@ -299,7 +299,7 @@ package：
 ```json
 {
   "dependencies": {
-    "@lynx-showcase/opencv-document-scanner":
+    "@byted-lynx/opencv-document-scanner":
       "file:<LYNX_ROOT>/explorer/showcase/native/opencv-document-scanner"
   }
 }
@@ -322,7 +322,7 @@ explorer/showcase/native/opencv-document-scanner/lynx.lib.json
 {
   "platforms": {
     "android": {
-      "packageName": "org.lynxsdk.example.opencv",
+      "packageName": "com.bytedance.lynx.opencvdocumentscanner",
       "sourceDir": "android",
       "nodeApiAddons": [
         {
@@ -552,6 +552,11 @@ Explorer 只使用 client DSL：
 
 ```ruby
 lynx_root = File.expand_path('../../../..', __dir__)
+
+install! 'cocoapods',
+         :generate_multiple_pod_projects => true,
+         :incremental_installation => true
+
 plugin 'cocoapods-lynx-library'
 
 target 'LynxExplorer' do
@@ -561,6 +566,11 @@ target 'LynxExplorer' do
   )
 end
 ```
+
+multi-project 模式用于隔离 PrimJS 内部 N-API headers 与
+`LynxWeakNodeAPI` 对 addon 发布的标准 headers。两套 headers 都是必需的，但单一
+`Pods.xcodeproj` 的全局 header map 可能把同名 `napi.h` 和
+`js_native_api.h` 解析到错误 target。
 
 Podfile 没有手工声明 `OpenCVDocumentScanner`。`pod install` 的 dependency graph
 中，`LynxLibraryRegistry` 自动依赖 `OpenCVDocumentScanner`；OpenCV Pod 再依赖：
@@ -621,13 +631,13 @@ lynxtron/lynx_module.cc
 AutoLink stage package 后，generated host entry 调用：
 
 ```js
-require('@lynx-showcase/opencv-document-scanner/lynxtron');
+require('@byted-lynx/opencv-document-scanner/lynxtron');
 ```
 
 `index.cjs` 按 `process.platform` / `process.arch` 加载：
 
 ```text
-lynxtron/dist/darwin/arm64/OpenCVDocumentScanner.node
+dist/darwin/arm64/OpenCVDocumentScanner.node
 ```
 
 ### 9.2 为什么 `.node` 有两个入口
@@ -661,7 +671,7 @@ package 被 AutoLink 移动到：
 
 ```text
 dist/.lynxtron/native/node_modules/
-  @lynx-showcase/opencv-document-scanner/
+  @byted-lynx/opencv-document-scanner/
 ```
 
 后仍可加载。OpenCV 之外的 codec/BLAS runtime 由本机构建环境提供；正式发布 package
@@ -841,8 +851,8 @@ cmake --build lynxtron/build --config Release
 产物：
 
 ```text
-lynxtron/dist/darwin/arm64/OpenCVDocumentScanner.node
-lynxtron/dist/darwin/arm64/libopencv_*.dylib
+dist/darwin/arm64/OpenCVDocumentScanner.node
+dist/darwin/arm64/libopencv_*.dylib
 ```
 
 普通 Lynxtron宿主只需要：
@@ -1034,7 +1044,7 @@ OpenCV 5.0.0
 AutoLink resolution：
 
 ```text
-package: @lynx-showcase/opencv-document-scanner
+package: @byted-lynx/opencv-document-scanner
 stageMode: package
 platform: darwin
 arch: arm64
@@ -1051,8 +1061,8 @@ node_modules/.cache/lynxtron-dev-plugins/autolink/register.mjs
 
 ```text
 dist/.lynxtron/native/node_modules/
-  @lynx-showcase/opencv-document-scanner/
-    lynxtron/dist/darwin/arm64/
+  @byted-lynx/opencv-document-scanner/
+    dist/darwin/arm64/
       OpenCVDocumentScanner.node
       libopencv_core.500.dylib
       libopencv_flann.500.dylib
@@ -1172,10 +1182,10 @@ OpenCV 专用判断。Lynxtron repo 中的 client diff 是 output staging 和 ar
 
 ### 16.5 Android 出现 provider ClassNotFound warning
 
-当前 upstream client 会为 Android library 推导
-`<packageName>.LynxLibraryProviderImpl`。纯 N-API library 没有 Java provider 时，
-SDK registry 会记录 warning 并跳过 provider；addon 已在同一个 generated entry
-中独立加载，不影响 N-API 功能。
+新版 package 在 `lynx.lib.json` 中显式声明 `providerClassName: null`。支持该字段的
+Android AutoLink client 不会为纯 N-API library 注册 Java provider。旧 client 会忽略
+该字段并继续推导 `<packageName>.LynxLibraryProviderImpl`，因此仍可能记录 warning；
+addon 已在同一个 generated entry 中独立加载，不影响 N-API 功能。
 
 判断是否成功应看：
 

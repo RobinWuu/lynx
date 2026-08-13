@@ -114,9 +114,9 @@ importers:
 
   explorer:
     specifiers:
-      '@lynx-showcase/opencv-document-scanner': workspace:*
+      '@byted-lynx/opencv-document-scanner': workspace:*
     dependencies:
-      '@lynx-showcase/opencv-document-scanner': link:showcase/native/opencv-document-scanner
+      '@byted-lynx/opencv-document-scanner': link:showcase/native/opencv-document-scanner
 
   explorer/homepage:
     specifiers:
@@ -164,6 +164,7 @@ importers:
 
   explorer/showcase:
     specifiers:
+      '@byted-lynx/opencv-document-scanner': workspace:*
       '@lynx-example/animation': 0.3.0
       '@lynx-example/css': 0.3.0
       '@lynx-example/fetch': 0.3.0
@@ -175,8 +176,8 @@ importers:
       '@lynx-example/text': 0.6.2
       '@lynx-example/view': 0.3.0
       '@lynx-js/qrcode-rsbuild-plugin': 0.3.6
-      '@lynx-showcase/opencv-document-scanner': workspace:*
     dependencies:
+      '@byted-lynx/opencv-document-scanner': link:native/opencv-document-scanner
       '@lynx-example/animation': 0.3.0
       '@lynx-example/css': 0.3.0
       '@lynx-example/fetch': 0.3.0
@@ -187,19 +188,18 @@ importers:
       '@lynx-example/scroll-view': 0.3.0
       '@lynx-example/text': 0.6.2
       '@lynx-example/view': 0.3.0
-      '@lynx-showcase/opencv-document-scanner': link:native/opencv-document-scanner
     devDependencies:
       '@lynx-js/qrcode-rsbuild-plugin': 0.3.6
 
   explorer/showcase/menu:
     specifiers:
+      '@byted-lynx/opencv-document-scanner': workspace:*
       '@explorer/lib': workspace:*
       '@lynx-js/qrcode-rsbuild-plugin': 0.3.6
       '@lynx-js/react': 0.107.0
       '@lynx-js/react-rsbuild-plugin': 0.9.8
       '@lynx-js/rspeedy': 0.9.3
       '@lynx-js/types': 3.3.0
-      '@lynx-showcase/opencv-document-scanner': workspace:*
       '@rsbuild/plugin-sass': ^1.1.2
       '@types/react': 18.3.18
       prettier: 3.4.2
@@ -208,9 +208,9 @@ importers:
       sparkling-method: 2.1.0-rc.12
       zustand: ^5.0.3
     dependencies:
+      '@byted-lynx/opencv-document-scanner': link:../native/opencv-document-scanner
       '@explorer/lib': link:../../lib
       '@lynx-js/react': 0.107.0_smdqjdvvdjbjwyrr673xzocrfm
-      '@lynx-showcase/opencv-document-scanner': link:../native/opencv-document-scanner
       react-dom: 19.1.0
       react-router-dom: 6.30.1_react-dom@19.1.0
       sparkling-method: 2.1.0-rc.12

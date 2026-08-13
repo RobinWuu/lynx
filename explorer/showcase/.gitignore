@@ -1,2 +1,9 @@
 **/dist
+!native/opencv-document-scanner/dist/
+native/opencv-document-scanner/dist/*
+!native/opencv-document-scanner/dist/darwin/
+native/opencv-document-scanner/dist/darwin/*
+!native/opencv-document-scanner/dist/darwin/arm64/
+native/opencv-document-scanner/dist/darwin/arm64/*
+!native/opencv-document-scanner/dist/darwin/arm64/OpenCVDocumentScanner.node
 /examples/

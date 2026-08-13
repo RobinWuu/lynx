@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'OpenCVDocumentScanner'
-  s.version = '0.0.1'
+  s.version = '0.1.0-alpha.1'
   s.summary = 'OpenCV document scanner for Lynx N-API AutoLink'
   s.homepage = 'https://github.com/lynx-family/lynx'
   s.license = { :type => 'Apache-2.0' }

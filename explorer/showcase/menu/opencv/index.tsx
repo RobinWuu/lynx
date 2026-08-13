@@ -3,8 +3,8 @@
 // LICENSE file in the root directory of this source tree.
 
 import { root, useEffect, useState } from '@lynx-js/react';
-import { OpenCVDocumentScanner } from '@lynx-showcase/opencv-document-scanner';
-import type { OpenCVDocumentScannerResult } from '@lynx-showcase/opencv-document-scanner';
+import { OpenCVDocumentScanner } from '@byted-lynx/opencv-document-scanner';
+import type { OpenCVDocumentScannerResult } from '@byted-lynx/opencv-document-scanner';
 
 import SourceImage from './sudoku.png?inline';
 import './styles.scss';

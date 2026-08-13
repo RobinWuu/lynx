@@ -4,6 +4,27 @@
 apply plugin: 'com.android.library'
 
 def primjsVersion = rootProject.findProperty('lynx.primjs.version') ?: '4.+'
+def scannerCompileSdkVersion =
+        rootProject.ext.has('compileSdkVersion')
+                ? rootProject.ext.compileSdkVersion
+                : 33
+def scannerNdkVersion =
+        rootProject.ext.has('ndkVersion')
+                ? rootProject.ext.ndkVersion
+                : rootProject.findProperty('android.ndkVersion')
+def scannerAbiListValue =
+        rootProject.ext.has('abiList')
+                ? rootProject.ext.abiList
+                : (rootProject.findProperty('abiList') ?: 'arm64-v8a')
+def scannerAbiList =
+        scannerAbiListValue instanceof Collection
+                ? scannerAbiListValue.collect { it.toString().trim() }
+                : scannerAbiListValue.toString().split(',').collect { it.trim() }
+def scannerCmakeVersion =
+        rootProject.ext.has('CMAKE_VERSION')
+                ? rootProject.ext.CMAKE_VERSION
+                : '3.18.1'
+
 configurations {
     primjsNativeAar
     opencvNativeAar
@@ -27,8 +48,13 @@ task extractOpenCVNativeLibraries(type: Sync) {
 }
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    ndkVersion rootProject.ext.ndkVersion
+    if (android.hasProperty('namespace')) {
+        namespace 'com.bytedance.lynx.opencvdocumentscanner'
+    }
+    compileSdkVersion scannerCompileSdkVersion
+    if (scannerNdkVersion) {
+        ndkVersion scannerNdkVersion
+    }
 
     defaultConfig {
         minSdkVersion 24
@@ -40,7 +66,7 @@ android {
                         "-DLYNX_PRIMJS_JNI_DIR=$buildDir/primjs-native/jni",
                         "-DOPENCV_NATIVE_DIR=$buildDir/opencv-native"
                 cppFlags "-std=c++17", "-fexceptions", "-frtti"
-                abiFilters(*rootProject.ext.abiList)
+                abiFilters(*scannerAbiList)
             }
         }
     }
@@ -48,7 +74,7 @@ android {
     externalNativeBuild {
         cmake {
             path 'CMakeLists.txt'
-            version rootProject.ext.CMAKE_VERSION
+            version scannerCmakeVersion
         }
     }
 

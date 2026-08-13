@@ -592,6 +592,10 @@ gem 'cocoapods-lynx-library', '<与宿主 Lynx SDK 匹配的版本>'
 Podfile：
 
 ```ruby
+install! 'cocoapods',
+         :generate_multiple_pod_projects => true,
+         :incremental_installation => true
+
 plugin 'cocoapods-lynx-library'
 
 target 'YourApp' do
@@ -603,6 +607,10 @@ target 'YourApp' do
   # Existing Lynx pods...
 end
 ```
+
+当前需要使用 CocoaPods multi-project 模式。PrimJS 内部 N-API headers 与
+`LynxWeakNodeAPI` 面向 addon 的标准 headers 职责不同且都需要发布；单一
+`Pods.xcodeproj` 的全局 header map 可能把两套同名 headers 混用。
 
 `:root` 应指向能够向上找到宿主 `node_modules` 的工程目录，不是
 `opencv-document-scanner/ios`。随后执行：
@@ -924,11 +932,27 @@ N-API runtime；已正式支持 N-API addon AutoLink 的 SDK 会自带该能力�
 安装与宿主匹配的 `cocoapods-lynx-library`，在 Podfile 中：
 
 ```ruby
+install! 'cocoapods',
+         :generate_multiple_pod_projects => true,
+         :incremental_installation => true
+
 plugin 'cocoapods-lynx-library'
 use_lynx_library!
 ```
 
 然后重新执行 `pod install`。
+
+### 步骤 4.1：输入安全边界
+
+`scanDocument` 接收编码 PNG/JPEG bytes，并在进入处理流水线前应用以下限制：
+
+- encoded input 不超过 32 MiB；
+- decoded image 最大边不超过 12,000 pixels；
+- decoded image 不超过 48 megapixels。
+
+空输入、超限输入与解码失败会分别抛出带 `INPUT_EMPTY`、
+`INPUT_TOO_LARGE`、`IMAGE_DIMENSION_TOO_LARGE` 或
+`IMAGE_DECODE_FAILED` code 的 JavaScript Error。
 
 ### 步骤 5：配置 Lynxtron client
 
@@ -969,7 +993,7 @@ use_lynx_library!
 Explorer 页面只做：
 
 ```ts
-import { OpenCVDocumentScanner } from '@lynx-showcase/opencv-document-scanner';
+import { OpenCVDocumentScanner } from '@byted-lynx/opencv-document-scanner';
 ```
 
 它没有调用 `System.loadLibrary`、没有引用 Pod、没有 `require()` `.node`。
