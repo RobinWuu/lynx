@@ -1,0 +1,6 @@
+{
+  "name": "libOpenCVDocumentScanner.so",
+  "version": "0.0.1",
+  "description": "Native loader for @byted-lynx/opencv-document-scanner",
+  "types": "./index.d.ts"
+}

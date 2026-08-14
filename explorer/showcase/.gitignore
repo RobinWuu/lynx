@@ -1,2 +1,9 @@
 **/dist
+!native/opencv-document-scanner/dist/
+native/opencv-document-scanner/dist/*
+!native/opencv-document-scanner/dist/macos/
+native/opencv-document-scanner/dist/macos/*
+!native/opencv-document-scanner/dist/macos/arm64/
+native/opencv-document-scanner/dist/macos/arm64/*
+!native/opencv-document-scanner/dist/macos/arm64/opencv-document-scanner.node
 /examples/

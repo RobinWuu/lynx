@@ -1,0 +1,11 @@
+{
+  "name": "@byted_lynx/opencv_document_scanner",
+  "version": "0.0.1",
+  "description": "A native Lynx library for HarmonyOS",
+  "license": "Apache-2.0",
+  "main": "Index.ets",
+  "dependencies": {
+    "@lynx/primjs": "*",
+    "libOpenCVDocumentScanner.so": "file:./src/main/cpp/types/libOpenCVDocumentScanner"
+  }
+}
