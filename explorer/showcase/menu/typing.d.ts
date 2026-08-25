@@ -13,3 +13,19 @@ declare module '@lynx-js/types' {
     safeAreaBottom?: number;
   }
 }
+
+declare const SystemInfo: {
+  platform: string;
+};
+
+declare function __lynxArrayBufferToBase64(buffer: ArrayBuffer): string;
+declare function __lynxBase64ToArrayBuffer(base64: string): ArrayBuffer;
+
+declare let NativeModules: {
+  ExplorerModule: {
+    openSchema(url: string);
+    navigateBack();
+  };
+  OpenCVDocumentScanner: import('@byted-lynx/opencv-document-scanner')
+    .OpenCVDocumentScanner;
+};

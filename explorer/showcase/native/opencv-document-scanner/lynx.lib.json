@@ -1,0 +1,49 @@
+{
+  "platforms": {
+    "android": {
+      "packageName": "com.bytedance.lynx.opencvdocumentscanner",
+      "sourceDir": "android",
+      "providerClassName": null,
+      "nodeApiAddons": [
+        {
+          "name": "OpenCVDocumentScanner",
+          "libraryName": "OpenCVDocumentScanner",
+          "required": true
+        }
+      ]
+    },
+    "ios": {
+      "sourceDir": "ios",
+      "podspecPath": "ios/byted-lynx-opencv-document-scanner.podspec",
+      "nodeApiAddons": [
+        {
+          "name": "OpenCVDocumentScanner",
+          "podName": "byted-lynx-opencv-document-scanner",
+          "podspecPath": "ios/byted-lynx-opencv-document-scanner.podspec",
+          "addonUseHeader": "addon_use.h"
+        }
+      ]
+    },
+    "harmony": {
+      "packageDir": "harmony",
+      "providerExportName": null,
+      "nodeApiAddons": [
+        {
+          "name": "OpenCVDocumentScanner",
+          "libraryName": "OpenCVDocumentScanner",
+          "initializerExportName": "initializeNodeApiAddon",
+          "required": true
+        }
+      ]
+    },
+    "lynxtron": {
+      "path": "dist"
+    },
+    "macos": {
+      "sourceDir": "shared"
+    },
+    "windows": {
+      "sourceDir": "shared"
+    }
+  }
+}

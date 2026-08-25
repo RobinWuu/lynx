@@ -1,0 +1,63 @@
+{
+  "name": "@byted-lynx/opencv-document-scanner",
+  "version": "0.1.0-alpha.2",
+  "description": "Cross-platform OpenCV document scanner for Lynx Node-API AutoLink",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./lynxtron": "./lynxtron/index.cjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "android/CMakeLists.txt",
+    "android/build.gradle.kts",
+    "android/src",
+    "harmony/Index.ets",
+    "harmony/build-profile.json5",
+    "harmony/hvigorfile.ts",
+    "harmony/oh-package.json5",
+    "harmony/src/main/cpp/CMakeLists.txt",
+    "harmony/src/main/cpp/harmony_entry.cc",
+    "harmony/src/main/cpp/third_party/opencv-mobile-4.13.0-harmonyos.zip",
+    "harmony/src/main/cpp/types",
+    "harmony/src/main/module.json5",
+    "dist",
+    "lynxtron/CMakeLists.txt",
+    "lynxtron/generated_napi_registration.cc",
+    "lynxtron/index.cjs",
+    "lynxtron/library_entry.cc",
+    "shared/CMakeLists.txt",
+    "shared/nativeModule",
+    "generated",
+    "ios",
+    "LICENSE",
+    "licenses",
+    "scripts",
+    "src",
+    "THIRD_PARTY_NOTICES.md",
+    "types",
+    "lynx.lib.json",
+    "README.md"
+  ],
+  "scripts": {
+    "codegen": "lynx-autolink-codegen",
+    "build:lynxtron": "cmake -S lynxtron -B build/lynxtron -DCMAKE_BUILD_TYPE=Release \"-DOpenCV_DIR=$OpenCV_DIR\" \"-DOPENCV_FRAMEWORK_DIR=$OPENCV_FRAMEWORK_DIR\" && cmake --build build/lynxtron --config Release",
+    "prepack": "node ./scripts/verify-package.mjs"
+  },
+  "dependencies": {
+    "@lynx-js/weak-node-api": "^0.0.9",
+    "@lynx-js/lynx-library-headers": "*"
+  },
+  "devDependencies": {
+    "@lynx-js/autolink-codegen": "^0.4.1"
+  },
+  "publishConfig": {
+    "registry": "https://bnpm.byted.org/"
+  }
+}

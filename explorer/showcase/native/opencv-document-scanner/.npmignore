@@ -1,0 +1,5 @@
+android/.cxx/
+android/build/
+build/
+node_modules/
+shared/third_party/
